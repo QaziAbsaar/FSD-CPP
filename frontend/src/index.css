@@ -1,262 +1,70 @@
 /* frontend/src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  body {
+    @apply font-sans antialiased bg-[#020617] text-white overflow-x-hidden;
+  }
 }
 
+@layer components {
+  .btn {
+    @apply px-6 py-2 rounded-full font-medium transition-all duration-300 transform active:scale-95;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-neon-blue to-neon-purple text-white shadow-lg shadow-neon-blue/20 hover:shadow-neon-purple/40 hover:-translate-y-0.5 btn;
+  }
+  
+  .btn-secondary {
+    @apply bg-white/5 text-white border border-white/10 shadow-sm hover:shadow-md hover:bg-white/10 btn;
+  }
+
+  .card-glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-lg;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border border-white/10 focus:border-neon-blue focus:ring-1 focus:ring-neon-blue outline-none transition-all duration-200 bg-[#0f172a] text-white placeholder-gray-500;
+  }
+
+  .btn-glow {
+    @apply relative overflow-hidden bg-neon-blue text-white shadow-lg hover:shadow-neon-blue/50 transition-all duration-300 btn;
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+::selection {
+  background: #00f0ff;
+  color: #000;
+}
+
+/* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
 }
-
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ============================================
-   PREMIUM ANIMATIONS
-   ============================================ */
-
-/* Enhanced Floating with 3D rotation */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-  }
-  25% {
-    transform: translateY(-30px) translateX(10px);
-  }
-  50% {
-    transform: translateY(-50px) translateX(-5px);
-  }
-  75% {
-    transform: translateY(-25px) translateX(15px);
-  }
-}
-
-.animate-float {
-  animation: float 4s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
-}
-
-/* Delayed float animations */
-.animate-float-delayed-1 {
-  animation: float 4.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
-  animation-delay: 0.5s;
-}
-
-.animate-float-delayed-2 {
-  animation: float 5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
-  animation-delay: 1s;
-}
-
-.animate-float-delayed-3 {
-  animation: float 5.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
-  animation-delay: 1.5s;
-}
-
-/* Fade in and slide up - entrance */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-/* Text Shimmer Effect */
-@keyframes textShimmer {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.animate-text-shimmer {
-  background-size: 200% 200%;
-  animation: textShimmer 3s ease-in-out infinite;
-}
-
-/* Bounce Glow - for badges */
-@keyframes bounceGlow {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
-  }
-  50% {
-    transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(102, 126, 234, 0.8);
-  }
-}
-
-.animate-bounce-glow {
-  animation: bounceGlow 2s ease-in-out infinite;
-}
-
-/* Bounce Slow - scroll indicator */
-@keyframes bounceSlow {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
-}
-
-.animate-bounce-slow {
-  animation: bounceSlow 2.5s ease-in-out infinite;
-}
-
-/* Pulse Effect */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0.0, 0.6, 1) infinite;
-}
-
-/* ============================================
-   RESPONSIVE ANIMATIONS
-   ============================================ */
-
-@media (max-width: 768px) {
-  .animate-float,
-  .animate-float-delayed-1,
-  .animate-float-delayed-2,
-  .animate-float-delayed-3 {
-    animation-duration: 3.5s !important;
-  }
-  
-  .animate-fade-in-up {
-    animation-duration: 0.6s;
-  }
-}
-
-/* ============================================
-   UTILITY CLASSES
-   ============================================ */
-
-/* Smooth transitions */
-a, button {
-  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-}
-
-/* Focus styles for accessibility */
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-}
-
-/* GPU Acceleration */
-.animate-float,
-.animate-float-delayed-1,
-.animate-float-delayed-2,
-.animate-float-delayed-3,
-.animate-fade-in-up,
-.animate-text-shimmer {
-  will-change: transform, opacity;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Smooth scrolling */
-@supports (scroll-behavior: smooth) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Enhanced text rendering */
-h1, h2, h3, h4, h5, h6 {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Premium button effect */
-@keyframes buttonHoverShine {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-/* Responsive text sizes */
-@media (max-width: 640px) {
-  h1 {
-    font-size: 2.25rem;
-  }
-  
-  h2 {
-    font-size: 1.875rem;
-  }
-}
-
-@media (min-width: 641px) and (max-width: 1024px) {
-  h1 {
-    font-size: 3rem;
-  }
-}
-
-@media (min-width: 1025px) {
-  h1 {
-    font-size: 3.75rem;
-  }
-}
-
-/* Gradient background animation */
-.bg-gradient-animated {
-  background-size: 300% 300%;
-  animation: gradientShift 8s ease infinite;
-}
-
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* ============================================
-   PERFORMANCE OPTIMIZATIONS
-   ============================================ */
-
-/* Reduce animations for reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-

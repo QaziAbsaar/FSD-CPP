@@ -2,7 +2,6 @@
 import os
 from flask import Flask
 from flask_cors import CORS
-from flask_session import Session
 from models import db
 from routes import auth_bp, courses_bp, enrollments_bp, users_bp
 
@@ -16,21 +15,16 @@ def create_app(config_name="development"):
         app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
             "DATABASE_URL", "sqlite:///campus_hub.db"
         )
-        app.config["SESSION_COOKIE_SECURE"] = True
-        app.config["SESSION_COOKIE_HTTPONLY"] = True
-        app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
     else:  # development
         app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
             "DATABASE_URL", "sqlite:///campus_hub.db"
         )
-        app.config["SESSION_COOKIE_SECURE"] = False
-        app.config["SESSION_COOKIE_HTTPONLY"] = True
-        app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
-    # Flask-Session configuration (File-based)
-    app.config["SESSION_TYPE"] = "filesystem"
-    app.config["PERMANENT_SESSION_LIFETIME"] = 86400  # 24 hours
-    app.secret_key = os.getenv("SECRET_KEY", "dev-secret-key-change-in-production")
+    # JWT Configuration
+    app.config["JWT_SECRET_KEY"] = os.getenv(
+        "JWT_SECRET_KEY", "your-super-secret-jwt-key-change-in-production-12345"
+    )
+    app.secret_key = app.config["JWT_SECRET_KEY"]
 
     # Initialize extensions
     db.init_app(app)
@@ -38,19 +32,12 @@ def create_app(config_name="development"):
         app,
         supports_credentials=True,
         resources={
-            r"/auth/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"]},
-            r"/courses/*": {
-                "origins": "*",
+            r"/*": {
+                "origins": ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5173", "http://127.0.0.1:5173"],
                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             },
-            r"/enrollments/*": {
-                "origins": "*",
-                "methods": ["GET", "POST", "DELETE", "OPTIONS"],
-            },
-            r"/users/*": {"origins": "*", "methods": ["GET", "OPTIONS"]},
         },
     )
-    Session(app)
 
     # Register blueprints
     app.register_blueprint(auth_bp)
